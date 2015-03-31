@@ -16,7 +16,6 @@ apply plugin: 'idea'
 apply plugin: 'eclipse'
 apply plugin: 'spring-boot'
 
-// applicationDefaultJvmArgs = ["-Dserver.port=8080", "-Dserver.host=0.0.0.0", "-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=7000"]
 
 jar {
   baseName = 'boot-stateless-auth'
@@ -49,6 +48,12 @@ dependencies {
   testCompile('org.springframework.boot:spring-boot-starter-test')
 
   runtime('com.h2database:h2')
+}
+
+test {
+    testLogging {
+        exceptionFormat = 'full'
+    }
 }
 
 task wrapper(type: Wrapper) {
