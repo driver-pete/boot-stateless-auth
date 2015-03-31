@@ -22,28 +22,6 @@ public class StatelessAuthentication {
 	}
 
 	@Bean
-	public InitializingBean insertDefaultUsers() {
-		return new InitializingBean() {
-			@Autowired
-			private UserRepository userRepository;
-
-			@Override
-			public void afterPropertiesSet() {
-				addUser("admin", "admin");
-				addUser("user", "user");
-			}
-
-			private void addUser(String username, String password) {
-				User user = new User();
-				user.setUsername(username);
-				user.setPassword(new BCryptPasswordEncoder().encode(password));
-				user.grantRole(username.equals("admin") ? UserRole.ADMIN : UserRole.USER);
-				userRepository.save(user);
-			}
-		};
-	}
-
-	@Bean
 	public Filter characterEncodingFilter() {
 		CharacterEncodingFilter characterEncodingFilter = new CharacterEncodingFilter();
 		characterEncodingFilter.setEncoding("UTF-8");
