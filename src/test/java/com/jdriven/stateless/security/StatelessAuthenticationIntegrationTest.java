@@ -36,23 +36,6 @@ public class StatelessAuthenticationIntegrationTest {
 		doAnonymousExchange(HttpMethod.GET, "/resources/js/controllers.js");
 	}
 
-	// CHANGE OWN USER PASSWORD
-
-	@Test(expected = HttpClientErrorException.class)
-	public void testUserApi_Change_Password_AsAnonymous() {
-		doAnonymousExchange(HttpMethod.POST, "/api/users/current?_method=PATCH",
-				"{\"password\":\"user\", \"newPassword\":\"test\"}");
-	}
-
-	@Test
-	public void testUserApi_Change_Password_AsUser() throws JsonProcessingException {
-		doAuthenticatedExchange("user", HttpMethod.POST, "/api/users/current?_method=PATCH",
-				"{\"password\":\"user\", \"newPassword\":\"test\"}", "user");
-
-		doAuthenticatedExchange("user", HttpMethod.POST, "/api/users/current?_method=PATCH",
-				"{\"password\":\"test\", \"newPassword\":\"user\"}", "test");
-	}
-
 	// GET OWN USER DETAILS
 
 	@Test
@@ -74,43 +57,6 @@ public class StatelessAuthenticationIntegrationTest {
 		final String result = doAuthenticatedExchange("admin", HttpMethod.GET, "/api/users/current");
 		assertTrue(result.contains("\"username\":\"admin\""));
 		assertTrue(result.contains("\"roles\":[\"ADMIN\"]"));
-	}
-
-	// GET ALL USER DETAILS (ADMIN FUNCTIONALITY)
-
-	@Test(expected = HttpClientErrorException.class)
-	public void testAdminApi_Get_Users_AsAnonymous() {
-		doAnonymousExchange(HttpMethod.GET, "/admin/api/users");
-	}
-
-	@Test(expected = HttpClientErrorException.class)
-	public void testAdminApi_Get_Users_AsUser() {
-		doAuthenticatedExchange("user", HttpMethod.GET, "/admin/api/users");
-	}
-
-	@Test
-	public void testAdminApi_Get_Users_AsAdmin() {
-		final String result = doAuthenticatedExchange("admin", HttpMethod.GET, "/admin/api/users");
-		assertEquals("[{\"id\":10,\"username\":\"admin\",\"expires\":0,\"roles\":[\"ADMIN\"]}"
-				+ ",{\"id\":11,\"username\":\"user\",\"expires\":0,\"roles\":[\"USER\"]}]", result);
-	}
-
-	// GRANT A ROLE TO A USER (ADMIN FUNCTIONALITY)
-
-	@Test(expected = HttpClientErrorException.class)
-	public void testAdminApi_GrantRole_AsAnonymous() {
-		doAnonymousExchange(HttpMethod.POST, "/admin/api/users/11/grant/role/ADMIN");
-	}
-
-	@Test(expected = HttpClientErrorException.class)
-	public void testAdminApi_GrantRole_AsUser() {
-		doAuthenticatedExchange("user", HttpMethod.POST, "/admin/api/users/11/grant/role/ADMIN");
-	}
-
-	@Test
-	public void testAdminApi_GrantRole_AsAdmin() {
-		doAuthenticatedExchange("admin", HttpMethod.POST, "/admin/api/users/11/grant/role/ADMIN");
-		doAuthenticatedExchange("admin", HttpMethod.POST, "/admin/api/users/11/revoke/role/ADMIN");
 	}
 
 	private String doAnonymousExchange(final HttpMethod method, final String path) {
