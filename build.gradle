@@ -1,18 +1,13 @@
 buildscript {
   dependencies {
-    classpath('org.springframework.boot:spring-boot-gradle-plugin:1.2.0.M1')
+    classpath('org.springframework.boot:spring-boot-gradle-plugin:1.2.2.RELEASE')
   }
   repositories {
-    mavenLocal()	
-    mavenCentral()
-    maven {url 'http://repo.spring.io/milestone'}
-    maven {url 'http://repo.spring.io/release'}
-    maven {url 'http://repo.spring.io/snapshot'}
+    mavenCentral()	
   }
 }
 
 apply plugin: 'java'
-apply plugin: 'idea'
 apply plugin: 'eclipse'
 apply plugin: 'spring-boot'
 
@@ -31,23 +26,15 @@ eclipse {
 }
 
 repositories {
-  mavenLocal()	
-  mavenCentral()
-  maven {url 'http://repo.spring.io/milestone'}
-  maven {url 'http://repo.spring.io/release'}
-  maven {url 'http://repo.spring.io/snapshot'}
+  mavenCentral()	
 }
 
 dependencies {
   compile('org.springframework.boot:spring-boot-autoconfigure')
   compile('org.springframework.boot:spring-boot-starter-web')
-  //compile('org.springframework.boot:spring-boot-starter-data-jpa')
   compile('org.springframework.boot:spring-boot-starter-security')
-  //compile('org.hibernate:hibernate-validator')
 
   testCompile('org.springframework.boot:spring-boot-starter-test')
-
-  //runtime('com.h2database:h2')
 }
 
 test {
