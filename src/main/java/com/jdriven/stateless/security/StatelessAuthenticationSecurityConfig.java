@@ -48,17 +48,17 @@ public class StatelessAuthenticationSecurityConfig extends WebSecurityConfigurer
 				//allow anonymous GETs to API
 				.antMatchers(HttpMethod.GET, "/api/**").permitAll()
 				
-				//defined Admin only API area
-				.antMatchers("/admin/**").hasRole("ADMIN")
-				
 				//all other request need to be authenticated
 				.anyRequest().hasRole("USER").and()				
 		
 				// custom JSON based authentication by POST of {"username":"<name>","password":"<password>"} which sets the token header upon authentication
-				.addFilterBefore(new StatelessLoginFilter("/api/login", tokenAuthenticationService, userDetailsService, authenticationManager()), UsernamePasswordAuthenticationFilter.class)
+				.addFilterBefore(new StatelessLoginFilter("/api/login",
+						tokenAuthenticationService, userDetailsService, authenticationManager()),
+						UsernamePasswordAuthenticationFilter.class)
 
 				// custom Token based authentication based on the header previously given to the client
-				.addFilterBefore(new StatelessAuthenticationFilter(tokenAuthenticationService), UsernamePasswordAuthenticationFilter.class);
+				.addFilterBefore(new StatelessAuthenticationFilter(tokenAuthenticationService),
+						UsernamePasswordAuthenticationFilter.class);
 	}
 	
 	@Bean
