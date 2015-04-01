@@ -101,27 +101,21 @@ public class User implements UserDetails {
 		return roles;
 	}
 
-	public void setRoles(Set<UserRole> roles) {
-		for (UserRole role : roles) {
-			grantRole(role);
+	public void setRoles(Set<String> roles) {
+		for (String role : roles) {
+			this.grantRole(role);
 		}
 	}
 
-	public void grantRole(UserRole role) {
+	public void grantRole(String role) {
 		if (authorities == null) {
 			authorities = new HashSet<SimpleGrantedAuthority>();
 		}
-		authorities.add(role.asAuthorityFor(this));
+		authorities.add(new SimpleGrantedAuthority("ROLE_" + role));
 	}
 
-	public void revokeRole(UserRole role) {
-		if (authorities != null) {
-			authorities.remove(role.asAuthorityFor(this));
-		}
-	}
-
-	public boolean hasRole(UserRole role) {
-		return authorities.contains(role.asAuthorityFor(this));
+	public boolean hasRole(String role) {
+		return authorities.contains(new SimpleGrantedAuthority("ROLE_" + role));
 	}
 
 	@Override

@@ -32,7 +32,7 @@ public class UserDetailsService implements org.springframework.security.core.use
         User user = new User();
 		user.setUsername(username);
 		user.setPassword(new BCryptPasswordEncoder().encode(username));
-		user.grantRole(username.equals("admin") ? UserRole.ADMIN : UserRole.USER);
+		user.grantRole(username.equals("admin") ? "ADMIN" : "USER");
 		return user;
 	}
 }
