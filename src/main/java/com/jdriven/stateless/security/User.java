@@ -1,7 +1,6 @@
 package com.jdriven.stateless.security;
 
 import java.util.Date;
-import java.util.EnumSet;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -91,11 +90,13 @@ public class User implements UserDetails {
 	}
 
 	// Use Roles as external API
-	public Set<UserRole> getRoles() {
-		Set<UserRole> roles = EnumSet.noneOf(UserRole.class);
+	public Set<String> getRoles() {
+		Set<String> roles = new HashSet<String>();
 		if (authorities != null) {
 			for (SimpleGrantedAuthority authority : authorities) {
-				roles.add(UserRole.valueOf(authority));
+				String authorityStr = authority.getAuthority();
+				authorityStr = authorityStr.substring(authorityStr.lastIndexOf("_") + 1);
+				roles.add(authorityStr);
 			}
 		}
 		return roles;
