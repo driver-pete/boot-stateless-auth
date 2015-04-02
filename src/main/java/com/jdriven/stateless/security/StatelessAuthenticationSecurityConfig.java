@@ -60,20 +60,9 @@ public class StatelessAuthenticationSecurityConfig extends WebSecurityConfigurer
 				.addFilterBefore(new StatelessAuthenticationFilter(tokenAuthenticationService),
 						UsernamePasswordAuthenticationFilter.class);
 	}
-	
-	@Bean
-	@Override
-	public AuthenticationManager authenticationManagerBean() throws Exception {
-		return super.authenticationManagerBean();
-	}
 
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
 		auth.userDetailsService(userDetailsService).passwordEncoder(new BCryptPasswordEncoder());
-	}
-
-	@Override
-	protected UserDetailsService userDetailsService() {
-		return userDetailsService;
 	}
 }

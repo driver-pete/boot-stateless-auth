@@ -49,6 +49,7 @@ class StatelessLoginFilter extends AbstractAuthenticationProcessingFilter {
 		final UserAuthentication userAuthentication = new UserAuthentication(authenticatedUser);
 
 		// Add the custom token as HTTP header to the response
+		// and update expiration time of the token
 		tokenAuthenticationService.addAuthentication(response, userAuthentication);
 
 		// Add the authentication to the Security context
