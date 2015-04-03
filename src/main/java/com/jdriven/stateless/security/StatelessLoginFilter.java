@@ -46,7 +46,8 @@ class StatelessLoginFilter extends AbstractAuthenticationProcessingFilter {
 
 		// Lookup the complete User object from the database and create an Authentication for it
 		final User authenticatedUser = userDetailsService.loadUserByUsername(authentication.getName());
-		final UserAuthentication userAuthentication = new UserAuthentication(authenticatedUser);
+		final Authentication userAuthentication = new UsernamePasswordAuthenticationToken(authenticatedUser,
+				null, authenticatedUser.getAuthorities());
 
 		// Add the custom token as HTTP header to the response
 		// and update expiration time of the token
