@@ -30,7 +30,10 @@ public class StatelessAuthenticationSecurityConfig extends WebSecurityConfigurer
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		
-		// from defaults:
+		/* Bellow we first apply default configuration from WebSecurityConfigurerAdapter
+		 * but comment out some lines that are not useful for stateless security server
+		 * with some explanations.
+		 */
 		http
 			/* Because the token is not an actual Cookie,
 			 * no browser can be instructed add it to requests automatically.
@@ -99,7 +102,7 @@ public class StatelessAuthenticationSecurityConfig extends WebSecurityConfigurer
 			 * Allows configuring how an anonymous user is represented.
 			 * By default anonymous users will be represented with an AnonymousAuthenticationToken
 			 * and contain the role "ROLE_ANONYMOUS".
-			 * Original code made use of it in the test, so we keep it here for now.
+			 * Original code gives access to non-authenticated users for GET requests.
 			 */
 			.anonymous().and()
 			/*
