@@ -34,9 +34,9 @@ class StatelessLoginFilter extends AbstractAuthenticationProcessingFilter {
 	public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response)
 			throws AuthenticationException, IOException, ServletException {
 
-		final User user = new ObjectMapper().readValue(request.getInputStream(), User.class);
+		final UserWithExpiration userWithExpiration = new ObjectMapper().readValue(request.getInputStream(), UserWithExpiration.class);
 		final UsernamePasswordAuthenticationToken loginToken = new UsernamePasswordAuthenticationToken(
-				user.getUsername(), user.getPassword());
+				userWithExpiration.getUsername(), userWithExpiration.getPassword());
 		return getAuthenticationManager().authenticate(loginToken);
 	}
 
@@ -45,7 +45,7 @@ class StatelessLoginFilter extends AbstractAuthenticationProcessingFilter {
 			FilterChain chain, Authentication authentication) throws IOException, ServletException {
 
 		// Lookup the complete User object from the database and create an Authentication for it
-		final User authenticatedUser = userDetailsService.loadUserByUsername(authentication.getName());
+		final UserWithExpiration authenticatedUser = userDetailsService.loadUserByUsername(authentication.getName());
 		final Authentication userAuthentication = new UsernamePasswordAuthenticationToken(authenticatedUser,
 				null, authenticatedUser.getAuthorities());
 

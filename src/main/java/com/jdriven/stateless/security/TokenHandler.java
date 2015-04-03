@@ -31,7 +31,7 @@ public final class TokenHandler {
 		}
 	}
 
-	public User parseUserFromToken(String token) {
+	public UserWithExpiration parseUserFromToken(String token) {
 		final String[] parts = token.split(SEPARATOR_SPLITTER);
 		if (parts.length == 2 && parts[0].length() > 0 && parts[1].length() > 0) {
 			try {
@@ -40,9 +40,9 @@ public final class TokenHandler {
 
 				boolean validHash = Arrays.equals(createHmac(userBytes), hash);
 				if (validHash) {
-					final User user = fromJSON(userBytes);
-					if (new Date().getTime() < user.getExpires()) {
-						return user;
+					final UserWithExpiration userWithExpiration = fromJSON(userBytes);
+					if (new Date().getTime() < userWithExpiration.getExpires()) {
+						return userWithExpiration;
 					}
 				}
 			} catch (IllegalArgumentException e) {
@@ -52,8 +52,8 @@ public final class TokenHandler {
 		return null;
 	}
 
-	public String createTokenForUser(User user) {
-		byte[] userBytes = toJSON(user);
+	public String createTokenForUser(UserWithExpiration userWithExpiration) {
+		byte[] userBytes = toJSON(userWithExpiration);
 		byte[] hash = createHmac(userBytes);
 		final StringBuilder sb = new StringBuilder(170);
 		sb.append(toBase64(userBytes));
@@ -62,17 +62,17 @@ public final class TokenHandler {
 		return sb.toString();
 	}
 
-	private User fromJSON(final byte[] userBytes) {
+	private UserWithExpiration fromJSON(final byte[] userBytes) {
 		try {
-			return new ObjectMapper().readValue(new ByteArrayInputStream(userBytes), User.class);
+			return new ObjectMapper().readValue(new ByteArrayInputStream(userBytes), UserWithExpiration.class);
 		} catch (IOException e) {
 			throw new IllegalStateException(e);
 		}
 	}
 
-	private byte[] toJSON(User user) {
+	private byte[] toJSON(UserWithExpiration userWithExpiration) {
 		try {
-			return new ObjectMapper().writeValueAsBytes(user);
+			return new ObjectMapper().writeValueAsBytes(userWithExpiration);
 		} catch (JsonProcessingException e) {
 			throw new IllegalStateException(e);
 		}

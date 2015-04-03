@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service;
 public class UserDetailsService implements org.springframework.security.core.userdetails.UserDetailsService {
 
 	@Override
-	public final User loadUserByUsername(String username) throws UsernameNotFoundException { 
+	public final UserWithExpiration loadUserByUsername(String username) throws UsernameNotFoundException { 
 		
 //		final SimpleGrantedAuthority authority = username.equals("admin") ? new SimpleGrantedAuthority("ROLE_ADMIN") : new SimpleGrantedAuthority("ROLE_USER");
 //		final List<SimpleGrantedAuthority> authorities = new ArrayList<SimpleGrantedAuthority>() {
@@ -29,10 +29,10 @@ public class UserDetailsService implements org.springframework.security.core.use
 //        
 //        return new User(username, new BCryptPasswordEncoder().encode(username), true, true, true, true, authorities);
 //        
-        User user = new User();
-		user.setUsername(username);
-		user.setPassword(new BCryptPasswordEncoder().encode(username));
-		user.grantRole(username.equals("admin") ? "ADMIN" : "USER");
-		return user;
+        UserWithExpiration userWithExpiration = new UserWithExpiration();
+		userWithExpiration.setUsername(username);
+		userWithExpiration.setPassword(new BCryptPasswordEncoder().encode(username));
+		userWithExpiration.grantRole(username.equals("admin") ? "ADMIN" : "USER");
+		return userWithExpiration;
 	}
 }

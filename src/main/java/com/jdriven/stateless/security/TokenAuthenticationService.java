@@ -24,18 +24,18 @@ public class TokenAuthenticationService {
 	}
 
 	public void addAuthentication(HttpServletResponse response, Authentication authentication) {
-		final User user = (User)authentication.getPrincipal();
-		user.setExpires(System.currentTimeMillis() + TEN_DAYS);
-		response.addHeader(AUTH_HEADER_NAME, tokenHandler.createTokenForUser(user));
+		final UserWithExpiration userWithExpiration = (UserWithExpiration)authentication.getPrincipal();
+		userWithExpiration.setExpires(System.currentTimeMillis() + TEN_DAYS);
+		response.addHeader(AUTH_HEADER_NAME, tokenHandler.createTokenForUser(userWithExpiration));
 	}
 
 	public Authentication getAuthentication(HttpServletRequest request) {
 		final String token = request.getHeader(AUTH_HEADER_NAME);
 		if (token != null) {
-			final User user = tokenHandler.parseUserFromToken(token);
-			if (user != null) {
-				return new UsernamePasswordAuthenticationToken(user, null,
-						user.getAuthorities());
+			final UserWithExpiration userWithExpiration = tokenHandler.parseUserFromToken(token);
+			if (userWithExpiration != null) {
+				return new UsernamePasswordAuthenticationToken(userWithExpiration, null,
+						userWithExpiration.getAuthorities());
 			}
 		}
 		return null;

@@ -11,16 +11,16 @@ import org.springframework.web.bind.annotation.RestController;
 public class UserController {
 
 	@RequestMapping(value = "/api/users/current", method = RequestMethod.GET)
-	public User getCurrent(Principal principal) {
+	public UserWithExpiration getCurrent(Principal principal) {
 		/*
 		 * Principal is our Authentication object from SecurityContext.
 		 */
 		if (principal != null) 
 		{
-			return (User)((Authentication) principal).getPrincipal();
+			return (UserWithExpiration)((Authentication) principal).getPrincipal();
 		} else
 		{
-			return new User("anonymousUser");
+			return new UserWithExpiration("anonymousUser");
 		}
 	}
 }

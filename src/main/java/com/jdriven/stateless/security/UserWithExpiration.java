@@ -11,16 +11,16 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 
-public class User implements UserDetails {
+public class UserWithExpiration implements UserDetails {
 
-	public User() {
+	public UserWithExpiration() {
 	}
 
-	public User(String username) {
+	public UserWithExpiration(String username) {
 		this.username = username;
 	}
 
-	public User(String username, Date expires) {
+	public UserWithExpiration(String username, Date expires) {
 		this.username = username;
 		this.expires = expires.getTime();
 	}

@@ -25,40 +25,40 @@ public class TokenHandlerTest {
 
 	@Test
 	public void testRoundTrip_ProperData() {
-		final User user = new User("Robbert", new Date(new Date().getTime() + 10000));
-		user.grantRole("ADMIN");
+		final UserWithExpiration userWithExpiration = new UserWithExpiration("Robbert", new Date(new Date().getTime() + 10000));
+		userWithExpiration.grantRole("ADMIN");
 
-		final User parsedUser = tokenHandler.parseUserFromToken(tokenHandler.createTokenForUser(user));
+		final UserWithExpiration parsedUser = tokenHandler.parseUserFromToken(tokenHandler.createTokenForUser(userWithExpiration));
 
-		assertEquals(user.getUsername(), parsedUser.getUsername());
+		assertEquals(userWithExpiration.getUsername(), parsedUser.getUsername());
 		assertTrue(parsedUser.hasRole("ADMIN"));
 	}
 
 	@Test
 	public void testCreateToken_SeparatorCharInUsername() {
-		final User user = new User("R.bbert", new Date(new Date().getTime() + 10000));
+		final UserWithExpiration userWithExpiration = new UserWithExpiration("R.bbert", new Date(new Date().getTime() + 10000));
 
-		final User parsedUser = tokenHandler.parseUserFromToken(tokenHandler.createTokenForUser(user));
+		final UserWithExpiration parsedUser = tokenHandler.parseUserFromToken(tokenHandler.createTokenForUser(userWithExpiration));
 
-		assertEquals(user.getUsername(), parsedUser.getUsername());
+		assertEquals(userWithExpiration.getUsername(), parsedUser.getUsername());
 	}
 
 	@Test
 	public void testCreateToken_ExcludePasswords() {
-		final User user = new User("Robbert", new Date(new Date().getTime() + 10000));
-		user.setPassword("abc");
-		user.setNewPassword("def");
+		final UserWithExpiration userWithExpiration = new UserWithExpiration("Robbert", new Date(new Date().getTime() + 10000));
+		userWithExpiration.setPassword("abc");
+		userWithExpiration.setNewPassword("def");
 
-		final User parsedUser = tokenHandler.parseUserFromToken(tokenHandler.createTokenForUser(user));
+		final UserWithExpiration parsedUser = tokenHandler.parseUserFromToken(tokenHandler.createTokenForUser(userWithExpiration));
 
-		assertEquals(user.getUsername(), parsedUser.getUsername());
+		assertEquals(userWithExpiration.getUsername(), parsedUser.getUsername());
 		assertNull(parsedUser.getPassword());
 		assertNull(parsedUser.getNewPassword());
 	}
 
 	@Test
 	public void testParseInvalidTokens_NoParseExceptions() throws JsonProcessingException {
-		final String unsignedToken = printBase64Binary(new ObjectMapper().writeValueAsBytes(new User("test")));
+		final String unsignedToken = printBase64Binary(new ObjectMapper().writeValueAsBytes(new UserWithExpiration("test")));
 
 		testForNullResult("");
 		testForNullResult(unsignedToken);
@@ -67,7 +67,7 @@ public class TokenHandlerTest {
 	}
 
 	private void testForNullResult(final String token) {
-		final User result = tokenHandler.parseUserFromToken(token);
+		final UserWithExpiration result = tokenHandler.parseUserFromToken(token);
 		assertNull(result);
 	}
 }
