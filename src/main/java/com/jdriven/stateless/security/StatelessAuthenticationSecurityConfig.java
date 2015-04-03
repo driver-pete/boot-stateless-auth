@@ -144,7 +144,10 @@ public class StatelessAuthenticationSecurityConfig extends WebSecurityConfigurer
 			
 			// custom Token based authentication based on the header previously given to the client
 			.addFilterBefore(new StatelessAuthenticationFilter(tokenAuthenticationService),
-					UsernamePasswordAuthenticationFilter.class);
+					UsernamePasswordAuthenticationFilter.class)
+//			.requiresChannel()
+//                 .anyRequest().requiresSecure()
+			;
 	}
 
 	@Override
