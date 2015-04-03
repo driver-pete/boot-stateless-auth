@@ -35,7 +35,7 @@ UserDetails - username, pass, authorities, enabled flags plus application specif
 
 More specifically,
 Step 2 == Authorization:
- -You access protected resource without authentication
+ - You access protected resource without authentication
  - AbstractSecurityInterceptor throws exception
  - ExceptionTranslationFilter catches the exception and launches AuthenticationEntryPoint
 Step 3.
@@ -54,7 +54,8 @@ Basic flow of authentication:
 3. Request is passed to AuthenticationManager which constructs resulting Authentication
 	(e.g. add authorities from database based on username):
      Authentication result = authManager.authenticate(request);
-     Default implementation of AuthenticationManager is ProviderManager.
+
+     In particular, the default implementation of AuthenticationManager is ProviderManager.
      ProviderManager calls a list of AuthenticationProviders.
      Default implementation of AuthenticationProvider is DaoAuthenticationProvider.
      DaoAuthenticaionProvider calls UserDetailsService.
