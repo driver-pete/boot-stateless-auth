@@ -108,9 +108,9 @@ public class StatelessAuthenticationSecurityConfig extends WebSecurityConfigurer
 			/*
 			 * There some methods of HttpServletRequest such a HttpServletRequest.getRemoteUser()
 			 * used in jsp that will be implemented using SecurityContext data.
-			 * Not clear if needed.
+			 * This is also needed to pass Principal to web controllers.
 			 */
-			//.servletApi().and()
+			.servletApi().and()
 			/*
 			 * Adds a Filter that will generate a login page - not needed here
 			 */
