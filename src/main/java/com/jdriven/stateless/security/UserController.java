@@ -17,7 +17,7 @@ public class UserController {
 		 */
 		if (principal != null) 
 		{
-			return (User)((Authentication) principal).getDetails();
+			return (User)((Authentication) principal).getPrincipal();
 		} else
 		{
 			return new User("anonymousUser");
