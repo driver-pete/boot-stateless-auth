@@ -58,23 +58,23 @@ public class StatelessAuthenticationSecurityConfig extends WebSecurityConfigurer
 			 *  	A content sniffing - browser tries to guess the MIME type based on content.
 			 *  	A malicious user might create a document of some valid format
 			 *  	that is also a valid JavaScript file and execute a XSS attack with it.
-             *  - xssProtection()
-             *  	extra cross site scripting protection for IE8
-             *  	http://blogs.msdn.com/b/ieinternals/archive/2011/01/31/controlling-the-internet-explorer-xss-filter-with-the-x-xss-protection-http-header.aspx
-             *  - cacheControl()
-             *  	A user may view an authenticated page, log out,
-             *  	and then a malicious user can use the browser history to view the cached page.
-             *  	This option disables browser caching. Later you may want to enable it for some
-             *  	resources such as CSS, JavaScript, and images.
-             *  - httpStrictTransportSecurity()
-             *  	When user enters http address of a secured website, the website redirects user to https.
-             *  	A malicious user could intercept the initial HTTP request and manipulate the response later
-             *  	giving the illusion that you talk with a secured website on https.
-             *  	This option tells the browser that this server accepts only https.
-             *  - frameOptions()
-             *  	Your website can be embedded into invisible X-Frame and other site can trick the user
-             *  	into clicking on your website (Clickjacking).
-             *  	This disable the ability to embed your server into X-Frames.
+			 *  - xssProtection()
+			 *  	extra cross site scripting protection for IE8
+			 *  	http://blogs.msdn.com/b/ieinternals/archive/2011/01/31/controlling-the-internet-explorer-xss-filter-with-the-x-xss-protection-http-header.aspx
+			 *  - cacheControl()
+			 *  	A user may view an authenticated page, log out,
+			 *  	and then a malicious user can use the browser history to view the cached page.
+			 *  	This option disables browser caching. Later you may want to enable it for some
+			 *  	resources such as CSS, JavaScript, and images.
+			 *  - httpStrictTransportSecurity()
+			 *  	When user enters http address of a secured website, the website redirects user to https.
+			 *  	A malicious user could intercept the initial HTTP request and manipulate the response later
+			 *  	giving the illusion that you talk with a secured website on https.
+			 *  	This option tells the browser that this server accepts only https.
+			 *  - frameOptions()
+			 *  	Your website can be embedded into invisible X-Frame and other site can trick the user
+			 *  	into clicking on your website (Clickjacking).
+			 *  	This disable the ability to embed your server into X-Frames.
 			 * Notice that in the original code on Stateless auth. only cacheControl was enabled
 			 * .headers().cacheControl().and()
 			 */
@@ -122,29 +122,29 @@ public class StatelessAuthenticationSecurityConfig extends WebSecurityConfigurer
 			 * Not needed since state is implemented on the client
 			 */
 			//.logout().and()
-				.authorizeRequests()			
-					//allow anonymous resource requests
-					.antMatchers("/").permitAll()
-					.antMatchers("/favicon.ico").permitAll()
-					.antMatchers("/resources/**").permitAll()
-					
-					//allow anonymous POSTs to login
-					.antMatchers(HttpMethod.POST, "/api/login").permitAll()
-					
-					//allow anonymous GETs to API
-					.antMatchers(HttpMethod.GET, "/api/**").permitAll()
-					
-					//all other request need to be authenticated
-					.anyRequest().hasRole("USER").and()				
-		
-				// custom JSON based authentication by POST of {"username":"<name>","password":"<password>"} which sets the token header upon authentication
-				.addFilterBefore(new StatelessLoginFilter("/api/login",
-						tokenAuthenticationService, userDetailsService, authenticationManager()),
-						UsernamePasswordAuthenticationFilter.class)
-
-				// custom Token based authentication based on the header previously given to the client
-				.addFilterBefore(new StatelessAuthenticationFilter(tokenAuthenticationService),
-						UsernamePasswordAuthenticationFilter.class);
+			.authorizeRequests()			
+				//allow anonymous resource requests
+				.antMatchers("/").permitAll()
+				.antMatchers("/favicon.ico").permitAll()
+				.antMatchers("/resources/**").permitAll()
+				
+				//allow anonymous POSTs to login
+				.antMatchers(HttpMethod.POST, "/api/login").permitAll()
+				
+				//allow anonymous GETs to API
+				.antMatchers(HttpMethod.GET, "/api/**").permitAll()
+				
+				//all other request need to be authenticated
+				.anyRequest().hasRole("USER").and()				
+			
+			// custom JSON based authentication by POST of {"username":"<name>","password":"<password>"} which sets the token header upon authentication
+			.addFilterBefore(new StatelessLoginFilter("/api/login",
+					tokenAuthenticationService, userDetailsService, authenticationManager()),
+					UsernamePasswordAuthenticationFilter.class)
+			
+			// custom Token based authentication based on the header previously given to the client
+			.addFilterBefore(new StatelessAuthenticationFilter(tokenAuthenticationService),
+					UsernamePasswordAuthenticationFilter.class);
 	}
 
 	@Override
