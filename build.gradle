@@ -26,12 +26,13 @@ eclipse {
 }
 
 repositories {
-  mavenCentral()	
+  mavenCentral()
 }
 
 dependencies {
   compile('org.springframework.boot:spring-boot-starter-web')
-  compile('org.springframework.boot:spring-boot-starter-security')
+  compile('org.springframework.security:spring-security-web:4.0.0.RELEASE')
+  compile('org.springframework.security:spring-security-config:4.0.0.RELEASE')
 
   testCompile('org.springframework.boot:spring-boot-starter-test')
 }
